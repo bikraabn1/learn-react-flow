@@ -1,5 +1,5 @@
 'use client'
-import { Background, Controls, MiniMap, Node, ReactFlow, SelectionMode, addEdge, applyEdgeChanges, applyNodeChanges } from '@xyflow/react'
+import { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, ReactFlow, SelectionMode, addEdge, applyEdgeChanges, applyNodeChanges } from '@xyflow/react'
 import React, { useCallback, useState } from 'react'
 import NumberInput from '../components/node/NumberInput'
 import ColorPreview from '../components/node/ColorPreview'
@@ -38,7 +38,7 @@ const initialNodes: Node[] = [
 ]
 
 
-const initialEdges = [
+const initialEdges: Edge[] = [
     {
         id: '1-color',
         source: '1',
@@ -67,11 +67,11 @@ const FlowLayout = () => {
     const [nodes, setNodes] = useState(initialNodes)
     const [edges, setEdges] = useState(initialEdges)
 
-    const onNodesChanges = useCallback((changes: any) => {
+    const onNodesChanges = useCallback((changes: NodeChange<Node>[]) => {
         setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot))
     }, [])
 
-    const onEdgesChanges = useCallback((changes: any) => {
+    const onEdgesChanges = useCallback((changes: EdgeChange<Edge>[]) => {
         setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot))
     }, [])
 
