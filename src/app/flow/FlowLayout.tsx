@@ -9,61 +9,64 @@ const nodeTypes = {
     colorPreview: ColorPreview
 }
 
-const initialNodes: Node[] = [
-    {
-        id: '1',
-        position: { x: 100, y: 100 },
-        data: { label: 'Red', value: 255 },
-        type: 'numberInput'
-    },
-    {
-        id: '2',
-        position: { x: 100, y: 200 },
-        data: { label: 'Green', value: 255 },
-        type: 'numberInput'
-
-    },
-    {   
-        id: '3',
-        position: { x: 100, y: 300 },
-        data: { label: 'Blue', value: 255 },
-        type: 'numberInput'
-    },
-    {   
-        id: 'color',
-        position: { x: 300, y: 150 },
-        data: { label: 'Preview Color' },
-        type: 'colorPreview'
-    },
-]
-
-
-const initialEdges: Edge[] = [
-    {
-        id: '1-color',
-        source: '1',
-        target: 'color',
-        targetHandle: 'red',
-      },
-      {
-        id: '2-color',
-        source: '2',
-        target: 'color',
-        targetHandle: 'green',
-      },
-      {
-        id: '3-color',
-        source: '3',
-        target: 'color',
-        targetHandle: 'blue',
-      },
-]
-
 const rfStyle = {
     backgroundColor: '#B8CEFF',
 };
 
 const FlowLayout = () => {
+    const onDeleteNode = (id : number | string) => {
+        setNodes(nodes.filter(node => node.id !== id))
+    }
+
+    const initialNodes: Node[] = [
+        {
+            id: '1',
+            position: { x: 100, y: 100 },
+            data: { label: 'Red', value: 200, onDeleteNode: onDeleteNode },
+            type: 'numberInput'
+        },
+        {
+            id: '2',
+            position: { x: 100, y: 200 },
+            data: { label: 'Green', value: 255, onDeleteNode: onDeleteNode },
+            type: 'numberInput'
+
+        },
+        {
+            id: '3',
+            position: { x: 100, y: 300 },
+            data: { label: 'Blue', value: 255, onDeleteNode: onDeleteNode },
+            type: 'numberInput'
+        },
+        {
+            id: 'color',
+            position: { x: 300, y: 150 },
+            data: { label: 'Preview Color' },
+            type: 'colorPreview'
+        },
+    ]
+
+    const initialEdges: Edge[] = [
+        {
+            id: '1-color',
+            source: '1',
+            target: 'color',
+            targetHandle: 'red',
+        },
+        {
+            id: '2-color',
+            source: '2',
+            target: 'color',
+            targetHandle: 'green',
+        },
+        {
+            id: '3-color',
+            source: '3',
+            target: 'color',
+            targetHandle: 'blue',
+        },
+    ]
+
     const [nodes, setNodes] = useState(initialNodes)
     const [edges, setEdges] = useState(initialEdges)
 
@@ -79,6 +82,7 @@ const FlowLayout = () => {
         (params: any) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
         [],
     );
+
 
     return (
         <div style={{ height: '100%', width: '100%' }}>

@@ -4,7 +4,8 @@ import React, { useCallback, useState } from 'react'
 
 type NumberNodeData = {
     value: number,
-    label: string
+    label: string,
+    onDeleteNode: (id : number |string) => void
 }
 
 type NumberNode = Node<NumberNodeData>;
@@ -34,6 +35,7 @@ const NumberInput = ({ id, data }: NodeProps<NumberNode>) => {
                     className="nodrag"
                     value={number}
                 />
+                <button onClick={() => data.onDeleteNode(id)} style={{position: 'absolute', height: 20, width: 40, background: 'blue', color: '#ffffff', cursor: 'pointer'}}>delete</button>
             </div>
             <Handle type='source' position={Position.Right} />
         </div>
