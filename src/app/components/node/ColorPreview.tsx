@@ -1,8 +1,6 @@
 'use client'
-import { Handle, Node, NodeProps, Position, useNodeConnections, useNodesData } from '@xyflow/react'
-import React from 'react'
-
-
+import { Handle, Node, NodeProps, Position, useEdges, useNodeConnections, useNodeId, useNodesData } from '@xyflow/react'
+import React, { useMemo } from 'react'
 
 type ColorType = {
     r: number | unknown,
@@ -16,46 +14,39 @@ type ColorPreviewData = {
 
 type NumberNode = Node<ColorPreviewData>
 
-const ColorPreview = ({id, data} : NodeProps<NumberNode>) => {
-    const redConnection = useNodeConnections({
-        handleType: 'target',
-        handleId: 'red'
-    })
+const ColorPreview = ({ id, data }: NodeProps<NumberNode>) => {
+    const allEdges = useEdges()
 
-    console.log(redConnection?.[0])
+    const sourceNodeIds = useMemo(() => {
+        const ids = allEdges
+            .filter((edges) => edges.target === id)
+            .map((edge) => edge.source)
+        return ids
+    }, [id, allEdges])
 
-    const redNodeData = useNodesData(
-        redConnection?.[0].source,
-    )
-    const greenConnection = useNodeConnections({
-        handleType: 'target',
-        handleId: 'green'
-    })
+    const sourceNodeData = useNodesData(sourceNodeIds)
 
-    const greenNodeData = useNodesData(
-        greenConnection?.[0].source,
-    )
-    const blueConnection = useNodeConnections({
-        handleType: 'target',
-        handleId: 'blue'
-    })
+    const color =
+        useMemo(() => {
+            const findValueByHandle = (id: string) => {
+                const value = sourceNodeData.find((node) => node.id === id)?.data.value
 
-    const blueNodeData = useNodesData(
-        blueConnection?.[0].source,
-    )
+                if (typeof value !== 'number' || value < 0) {
+                    return 0
+                }
 
+                return value
+            }
+            return {
+                r: findValueByHandle('red'),
+                g: findValueByHandle('green'),
+                b: findValueByHandle('blue')
+            }
+        }, [allEdges, id])
 
-
-    const color: ColorType = {
-        r: redNodeData?.data.value || 0,
-        g: greenNodeData?.data.value || 0,
-        b: blueNodeData?.data.value || 0, 
-    }
-
-    console.log(color.r)
 
     return (
-        <div style={{background: `rgb(${color.r},${color.g},${color.b})`, width:200, height: 200, borderRadius: '10px', padding: '1rem'}}>
+        <div style={{ background: `rgb(${color.r},${color.g},${color.b})`, width: 200, height: 200, borderRadius: '10px', padding: '1rem' }}>
             <h3>{data.label}</h3>
             <div>
                 <Handle type='target' position={Position.Left} id='red' />

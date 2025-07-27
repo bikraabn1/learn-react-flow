@@ -5,15 +5,20 @@ import React, { useCallback, useState } from 'react'
 type NumberNodeData = {
     value: number,
     label: string,
-    onDeleteNode: (id : number |string) => void
 }
 
 type NumberNode = Node<NumberNodeData>;
 
 const NumberInput = ({ id, data }: NodeProps<NumberNode>) => {
 
-    const { updateNodeData } = useReactFlow()
+    const { updateNodeData, deleteElements } = useReactFlow()
     const [number, setNumber] = useState<number>(data.value)
+
+    const onDelete = () => {
+        useCallback(() => {
+            deleteElements({nodes: [{id}]})
+        },[])
+    }
 
     const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const cappedNumber = Math.min(255, Math.max(0, parseInt(e.target.value)))
@@ -35,7 +40,7 @@ const NumberInput = ({ id, data }: NodeProps<NumberNode>) => {
                     className="nodrag"
                     value={number}
                 />
-                <button onClick={() => data.onDeleteNode(id)} style={{position: 'absolute', height: 20, width: 40, background: 'blue', color: '#ffffff', cursor: 'pointer'}}>delete</button>
+                <button onClick={() => onDelete} style={{position: 'absolute', height: 20, width: 40, background: 'blue', color: '#ffffff', cursor: 'pointer'}}>delete</button>
             </div>
             <Handle type='source' position={Position.Right} />
         </div>

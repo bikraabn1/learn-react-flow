@@ -14,28 +14,25 @@ const rfStyle = {
 };
 
 const FlowLayout = () => {
-    const onDeleteNode = (id : number | string) => {
-        setNodes(nodes.filter(node => node.id !== id))
-    }
 
     const initialNodes: Node[] = [
         {
-            id: '1',
+            id: 'red',
             position: { x: 100, y: 100 },
-            data: { label: 'Red', value: 200, onDeleteNode: onDeleteNode },
+            data: { label: 'Red', value: 200 },
             type: 'numberInput'
         },
         {
-            id: '2',
+            id: 'green',
             position: { x: 100, y: 200 },
-            data: { label: 'Green', value: 255, onDeleteNode: onDeleteNode },
+            data: { label: 'Green', value: 255 },
             type: 'numberInput'
 
         },
         {
-            id: '3',
+            id: 'blue',
             position: { x: 100, y: 300 },
-            data: { label: 'Blue', value: 255, onDeleteNode: onDeleteNode },
+            data: { label: 'Blue', value: 255 },
             type: 'numberInput'
         },
         {
@@ -49,19 +46,19 @@ const FlowLayout = () => {
     const initialEdges: Edge[] = [
         {
             id: '1-color',
-            source: '1',
+            source: 'red',
             target: 'color',
             targetHandle: 'red',
         },
         {
             id: '2-color',
-            source: '2',
+            source: 'green',
             target: 'color',
             targetHandle: 'green',
         },
         {
             id: '3-color',
-            source: '3',
+            source: 'blue',
             target: 'color',
             targetHandle: 'blue',
         },
@@ -79,7 +76,7 @@ const FlowLayout = () => {
     }, [])
 
     const onConnect = useCallback(
-        (params : Connection) => setEdges((prevEdge) => addEdge(params, prevEdge)),
+        (params: Connection) => setEdges((prevEdge) => addEdge(params, prevEdge)),
         [],
     );
 
