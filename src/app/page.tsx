@@ -1,4 +1,4 @@
-import Flow from "./components/Flow";
+import Flow from "./flow/page";
 
 export default function Home() {
   return (
